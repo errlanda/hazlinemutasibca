@@ -5,7 +5,7 @@
       "src": "index.js",
       "use": "@vercel/node",
       "config": {
-        "nodeVersion": "20.x",
+        "nodeVersion": "18.x",
         "start": "npx tsx index.js"
       }
     }
