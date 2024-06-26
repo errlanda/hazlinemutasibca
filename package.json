@@ -1,0 +1,57 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "main": "example.js",
+  "directories": {
+    "example": "examples",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "npx tsx server.js",
+    "bca": "npx tsx bca.js",
+    "jsdoc": "jsdoc -c jsdoc.json -r -R README.md src -d docs",
+    "cron": "node cron-job.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/errlanda/bca.git"
+  },
+  "keywords": [
+    "mutasi",
+    "mutasi bca",
+    "scraper"
+  ],
+  "author": "Erland",
+  "license": "ISC",
+  "dependencies": {
+    "@traceo-sdk/node": "^0.34.1",
+    "@types/node": "^18.12.7",
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0-rc.12",
+    "date-format": "^4.0.10",
+    "express": "^4.19.2",
+    "fingerprint-injector": "^2.1.50",
+    "fs": "^0.0.1-security",
+    "karma-chrome-launcher": "^3.2.0",
+    "moment": "^2.29.4",
+    "node-cron": "^3.0.0",
+    "node-fetch": "^3.2.6",
+    "puppeteer": "^20.9.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-adblocker": "^2.13.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "puppeteer-recaptcha-bypass": "^1.0.1",
+    "tree-kill": "^1.2.2",
+    "tsx": "^4.15.5",
+    "ws": "^8.17.1",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/karma-chrome-launcher": "^3.1.4",
+    "docdash": "^2.0.2",
+    "jsdoc": "^4.0.2",
+    "jsdoc-to-markdown": "^8.0.0"
+  }
+}

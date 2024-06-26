@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>LOG Mutasi BCA</title>
+        <style>
+            /* CSS untuk tampilan log output */
+            body {
+                background-color: #1da1f2; /* Warna latar belakang biru Twitter */
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 5%;
+                box-sizing: border-box;
+            }
+
+            h1 {
+                color: white;
+                text-align: center;
+                margin-top: 50px; /* Jarak atas dari halaman */
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Efek bayangan untuk judul */
+            }
+
+            #log-container {
+                background-color: #000000; /* Warna latar belakang putih */
+                color: #1da1f2; /* Warna teks biru Twitter */
+                font-family: monospace;
+                padding: 10px;
+                overflow-y: scroll;
+                font-size: larger;
+                height: 400px;
+                margin: 20px auto; /* Pusatkan div log-container dan beri jarak atas/bawah */
+                border-radius: 12px; /* Sudut bulatan untuk kontainer log */
+
+                box-shadow: inset 0px 0px 11px 3px #74affded;
+            }
+
+            /* CSS untuk tombol stop dan logout */
+            #button-container {
+                display: flex;
+                justify-content: center;
+                gap: 5px; /* Jarak antara tombol */
+                margin-top: 20px; /* Jarak antara log container dan tombol */
+            }
+
+            #stopButton,
+            #logoutButton {
+                background-color: #ffffff; /* Warna latar belakang putih */
+                color: #1da1f2; /* Warna teks biru Twitter */
+                border: none;
+                padding: 10px 20px;
+                border-radius: 25px; /* Sudut bulatan untuk tombol */
+                cursor: pointer;
+                font-size: 16px;
+                transition:
+                    background-color 0.3s,
+                    color 0.3s;
+                box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
+
+            #stopButton:hover,
+            #logoutButton:hover {
+                background-color: #e1e8ed; /* Warna latar belakang saat hover */
+            }
+
+            /* CSS untuk footer */
+            footer {
+                color: white;
+                text-align: center;
+                margin-top: 30px; /* Jarak atas footer */
+                font-style: italic;
+            }
+
+            /* CSS untuk running text */
+            .running-text {
+                color: white;
+                text-align: center;
+                margin-top: 10px; /* Jarak atas running text */
+                font-style: italic;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>LOG Mutasi BCA</h1>
+
+        <div class="running-text">
+            <marquee behavior="scroll" direction="left">
+                Jika terjadi kesalahan proses, maka robot akan mengulangi
+                prosesnya dari awal. Hubungi 088989054639 untuk info lebih
+                lanjut.
+            </marquee>
+        </div>
+        <div id="log-container"></div>
+        <!-- Tambahkan div ini untuk menampilkan log output -->
+
+        <div id="button-container">
+            <form action="/stop" method="post">
+                <button type="submit" id="stopButton">Stop</button>
+                <!-- Tambahkan tombol stop -->
+            </form>
+            <form action="/logout" method="post">
+                <button type="submit" id="logoutButton">Logout</button>
+                <!-- Tambahkan tombol logout -->
+            </form>
+        </div>
+
+        <footer>Mutasi Scraper V1 by Erland @2024</footer>
+
+        <script>
+            // Script JavaScript untuk menerima log output dari WebSocket
+            const logContainer = document.getElementById("log-container");
+            const ws = new WebSocket(`wss://${window.location.host}`);
+
+            ws.onopen = () => {
+                console.log("Connected to WebSocket server");
+            };
+
+            ws.onmessage = (event) => {
+                const message = event.data;
+                logContainer.innerHTML += message + "<br>";
+                logContainer.scrollTop = logContainer.scrollHeight; // Scroll otomatis ke bawah
+            };
+
+            ws.onclose = () => {
+                console.log("Disconnected from WebSocket server");
+            };
+
+            ws.onerror = (error) => {
+                console.error(`WebSocket error: ${error.message}`);
+            };
+        </script>
+    </body>
+</html>
