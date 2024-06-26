@@ -1,13 +1,13 @@
 Kode ini untuk dideploy ke Replit
-
-untuk install
+<br>
+untuk install<br>
 npm install
-
-untuk menjalankan server
+<br>
+untuk menjalankan server<br>
 npm run start
-
-untuk menguji script scraper
+<br>
+untuk menguji script scraper <br>
 npx tsx bca.js yourUsername yourPassword yourAccountNumber yourPhoneNumber unlimited
-
+<br>
 Ubah sendiri endpoint ke BOT dan endpoint url yang Anda buat.
 
