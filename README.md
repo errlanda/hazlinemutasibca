@@ -7,7 +7,7 @@ untuk menjalankan server<br>
 npm run start
 <br><br>
 untuk menguji script scraper <br>
-npx tsx bca.js yourUsername yourPassword yourAccountNumber yourPhoneNumber unlimited
+node bca.js yourUsername yourPassword yourAccountNumber yourPhoneNumber unlimited
 <br><br>
 Ubah sendiri endpoint ke BOT dan endpoint url yang Anda buat.
 

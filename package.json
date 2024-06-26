@@ -1,15 +1,16 @@
 {
   "name": "nodejs",
   "version": "1.0.0",
-  "main": "example.js",
+  "type": "commonjs",
+  "main": "bca.js",
   "directories": {
     "example": "examples",
     "lib": "lib"
   },
   "scripts": {
     "test": "jest",
-    "start": "npx tsx server.js",
-    "bca": "npx tsx bca.js",
+    "start": "node index.js",
+    "bca": "node bca.js",
     "jsdoc": "jsdoc -c jsdoc.json -r -R README.md src -d docs",
     "cron": "node cron-job.js"
   },
@@ -30,6 +31,7 @@
     "axios": "^1.7.2",
     "body-parser": "^1.20.2",
     "cheerio": "^1.0.0-rc.12",
+    "chrome-aws-lambda": "^10.1.0",
     "date-format": "^4.0.10",
     "express": "^4.19.2",
     "fingerprint-injector": "^2.1.50",
@@ -39,12 +41,13 @@
     "node-cron": "^3.0.0",
     "node-fetch": "^3.2.6",
     "puppeteer": "^20.9.0",
+    "puppeteer-core": "^10.0.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-adblocker": "^2.13.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "puppeteer-recaptcha-bypass": "^1.0.1",
     "tree-kill": "^1.2.2",
-    "tsx": "^4.15.5",
+    "tsx": "^4.15.7",
     "ws": "^8.17.1",
     "zustand": "^4.5.2"
   },
@@ -52,6 +55,7 @@
     "@types/karma-chrome-launcher": "^3.1.4",
     "docdash": "^2.0.2",
     "jsdoc": "^4.0.2",
-    "jsdoc-to-markdown": "^8.0.0"
+    "jsdoc-to-markdown": "^8.0.0",
+    "typescript": "^5.5.2"
   }
 }

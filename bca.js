@@ -1,6 +1,6 @@
-import ScrapBCA from "./src/bank/BCA.class";
-import { BCAParser } from "./src/helper/utils/Parser";
-import axios from "axios";
+const ScrapBCA = require("./src/bank/BCA.class.js");
+const { BCAParser } = require("./src/helper/utils/Parser.js");
+const axios = require("axios");
 
 function delay(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
@@ -14,7 +14,7 @@ async function runScraper({
   unlimited,
 }) {
   const scraper = new ScrapBCA(username, password, accountNumber, {
-    headless: "new",
+    headless: false,
     args: [
       "--log-level=3",
       "--no-default-browser-check",

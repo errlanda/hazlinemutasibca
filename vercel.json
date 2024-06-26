@@ -3,17 +3,14 @@
   "builds": [
     {
       "src": "index.js",
-      "use": "@vercel/node",
-      "config": {
-        "nodeVersion": "20.x",
-        "start": "npx tsx index.js"
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.js"
-    }
+    { "src": "/start-scraping", "dest": "/index.js" },
+    { "src": "/check-mutasi", "dest": "/index.js" },
+    { "src": "/stop", "dest": "/index.js" },
+    { "src": "/logout", "dest": "/index.js" },
+    { "src": "/(.*)", "dest": "/index.js" }
   ]
 }

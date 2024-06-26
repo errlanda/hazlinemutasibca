@@ -1,21 +1,18 @@
-import express from "express";
-import bodyParser from "body-parser";
-import path from "path";
-import { exec } from "child_process";
-import { WebSocketServer, WebSocket } from "ws";
-import treeKill from "tree-kill";
-import { fileURLToPath } from "url";
-import http from "http"; // Menggunakan http daripada https
-import fs from "fs";
+const express = require("express");
+const bodyParser = require("body-parser");
+const path = require("path");
+const { exec } = require("child_process");
+const { WebSocketServer, WebSocket } = require("ws");
+const treeKill = require("tree-kill");
+const http = require("http");
+const fs = require("fs");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Create HTTP server
-const server = http.createServer(app); // Menggunakan http daripada https
+const server = http.createServer(app);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 let scraperProcess = null;
 let unlimitedMode = false;
 let logBuffer = []; // Buffer untuk menyimpan log sementara
@@ -51,8 +48,8 @@ app.post("/start-scraping", (req, res) => {
 
   if (!scraperProcess) {
     const command = unlimitedMode
-      ? `npx tsx bca.js ${username} ${password} ${accountNumber} ${phoneNumber} unlimited`
-      : `npx tsx bca.js ${username} ${password} ${accountNumber} ${phoneNumber}`;
+      ? `node bca.js ${username} ${password} ${accountNumber} ${phoneNumber} unlimited`
+      : `node bca.js ${username} ${password} ${accountNumber} ${phoneNumber}`;
     scraperProcess = exec(command, (error, stdout, stderr) => {
       if (error) {
         console.error(`Error: ${error.message}`);
@@ -167,5 +164,5 @@ function broadcast(data) {
 }
 
 server.listen(PORT, () => {
-  console.log(`Server berjalan pada http://localhost:${PORT}`); // Menggunakan http
+  console.log(`Server berjalan pada http://localhost:${PORT}`);
 });
