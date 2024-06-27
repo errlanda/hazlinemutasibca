@@ -11,7 +11,7 @@ class ScraperBank {
     this.user = user || "username";
     this.pass = pass || "pass";
     this.configBrowser = {
-      headless: false, // Headless mode is true by default in Vercel
+      headless: "new", // Headless mode is true by default in Vercel
       args: [
         "--window-position=000,000",
         "--no-sandbox",
