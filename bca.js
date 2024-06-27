@@ -14,7 +14,7 @@ async function runScraper({
   unlimited,
 }) {
   const scraper = new ScrapBCA(username, password, accountNumber, {
-    headless: false,
+    headless: "new",
     args: [
       "--log-level=3",
       "--no-default-browser-check",
