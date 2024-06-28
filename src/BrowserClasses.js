@@ -1,7 +1,6 @@
 const puppeteer = require("puppeteer-extra");
 const stealthPlugin = require("puppeteer-extra-plugin-stealth");
 const { newInjectedPage } = require("fingerprint-injector");
-const chromium = require("chrome-aws-lambda");
 
 puppeteer.use(stealthPlugin());
 
@@ -21,20 +20,18 @@ class ScraperBank {
         "--disable-setuid-sandbox",
         '--disable-extensions'
       ],
-      executablePath: "", // Tentukan path sesuai dengan lingkungan Anda
+      executablePath: '/opt/google/chrome/google-chrome', 
       ...args,
     };
   }
 
   async launchBrowser() {
     try {
-      this.configBrowser.executablePath = await chromium.executablePath;
-
       this.browser = await puppeteer.launch(this.configBrowser);
       this.page = await newInjectedPage(this.browser, {
         fingerprintOptions: {
-          devices: ["desktop"],
-          operatingSystems: ["macos"],
+          devices: ['desktop'],
+          operatingSystems: ['macos'],
         },
       });
 
