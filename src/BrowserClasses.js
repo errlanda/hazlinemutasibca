@@ -18,7 +18,6 @@ class ScraperBank {
         "--disable-features=IsolateOrigins",
         "--disable-site-isolation-trials",
         "--disable-setuid-sandbox",
-        '--disable-extensions'
       ],
       executablePath: '/root/.ssh/hazlinemutasibca/opt/google/chrome/google-chrome', 
       ...args,
