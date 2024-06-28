@@ -19,7 +19,7 @@ class ScraperBank {
         "--disable-site-isolation-trials",
         "--disable-setuid-sandbox",
       ],
-      executablePath: '/root/.ssh/hazlinemutasibca/opt/google/chrome/google-chrome', 
+      executablePath: '/home/cloudshell-user/hazlinemutasibca/opt/google/chrome/google-chrome', 
       ...args,
     };
   }
