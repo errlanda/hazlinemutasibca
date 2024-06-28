@@ -20,7 +20,7 @@ class ScraperBank {
         "--disable-setuid-sandbox",
         '--disable-extensions'
       ],
-      executablePath: '/opt/google/chrome/google-chrome', 
+      executablePath: '/root/.ssh/hazlinemutasibca/opt/google/chrome/google-chrome', 
       ...args,
     };
   }
