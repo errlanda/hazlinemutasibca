@@ -19,6 +19,7 @@ class ScraperBank {
         "--disable-features=IsolateOrigins",
         "--disable-site-isolation-trials",
         "--disable-setuid-sandbox",
+        '--disable-extensions'
       ],
       executablePath: "", // Tentukan path sesuai dengan lingkungan Anda
       ...args,
