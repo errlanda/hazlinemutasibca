@@ -8,7 +8,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "install": "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && ar x google-chrome-stable_current_amd64.deb && tar -xf data.tar.xz && npm install",
+    "install": "npm install && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && ar x google-chrome-stable_current_amd64.deb && tar -xf data.tar.xz",
     "start": "node index.js",
     "bca": "node bca.js",
     "jsdoc": "jsdoc -c jsdoc.json -r -R README.md src -d docs",
