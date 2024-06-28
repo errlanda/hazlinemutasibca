@@ -1,7 +1,5 @@
 const puppeteer = require("puppeteer-extra");
-const { execSync } = require("child_process");
 const stealthPlugin = require("puppeteer-extra-plugin-stealth");
-const chromium = require("chrome-aws-lambda");
 const { newInjectedPage } = require("fingerprint-injector");
 
 puppeteer.use(stealthPlugin());
@@ -11,7 +9,7 @@ class ScraperBank {
     this.user = user || "username";
     this.pass = pass || "pass";
     this.configBrowser = {
-      headless: "new", // Headless mode is true by default
+      headless: "new",
       args: [
         "--window-position=000,000",
         "--no-sandbox",
@@ -21,36 +19,18 @@ class ScraperBank {
         "--disable-site-isolation-trials",
         "--disable-setuid-sandbox",
       ],
-      executablePath: "", // Will be set dynamically below
+      executablePath: '/opt/google/chrome/google-chrome', 
       ...args,
     };
   }
 
   async launchBrowser() {
     try {
-      // Set the executable path for Chromium based on the environment
-      if (process.env.AWS_EXECUTION_ENV) {
-        // Running on AWS Lambda using chrome-aws-lambda
-        this.configBrowser.executablePath = await chromium.executablePath;
-        this.configBrowser.args = [
-          ...chromium.args,
-          ...this.configBrowser.args,
-        ]; // Append chromium args
-      } else {
-        // Running locally or on another platform
-        // You may need to adjust this based on your local setup
-        const chromiumPath = execSync("which chromium-browser")
-          .toString()
-          .trim();
-        this.configBrowser.executablePath = chromiumPath;
-      }
-
-      // Launch Puppeteer with the configured browser options
       this.browser = await puppeteer.launch(this.configBrowser);
       this.page = await newInjectedPage(this.browser, {
         fingerprintOptions: {
-          devices: ["desktop"],
-          operatingSystems: ["macos"],
+          devices: ['desktop'],
+          operatingSystems: ['macos'],
         },
       });
 
