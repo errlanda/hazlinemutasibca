@@ -11,7 +11,7 @@ services:
           - npm run start
     port: 8080
     healthCheck:
-      command: curl -f http://localhost:8080/ || exit 1
+      command: curl -f http://localhost:3000/ || exit 1
     environment:
       variables:
         NODE_ENV: production
