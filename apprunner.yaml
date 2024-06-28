@@ -1,17 +1,25 @@
 version: 1.0
-services:
-  - name: nodejs-app
-    source:
-      image: aws/codebuild/standard:5.0
-      runtime: nodejs:14
-      build:
-        commands:
-          - npm install
-          - npm run go
-          - npm run start
-    port: 8080
-    healthCheck:
-      command: curl -f http://localhost:3000/ || exit 1
-    environment:
-      variables:
-        NODE_ENV: production
+app:
+  runtime: nodejs12.x
+  build:
+    commands:
+      - chmod +x install-chrome.sh
+      - ./install-chrome.sh
+      - npm install
+      - npm run installbrowser
+
+  start:
+    command: node index.js
+    port: 3000
+
+  timeout:
+    start: 60
+
+  healthCheck:
+    command: curl -sS http://localhost:3000 || exit 1
+    interval: 5 seconds
+    timeout: 2 seconds
+    retries: 3
+
+  ports:
+    - port: 3000
