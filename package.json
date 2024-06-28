@@ -8,8 +8,9 @@
     "lib": "lib"
   },
   "scripts": {
-    "go": "chmod +x install-chrome.sh && npm run install",
+    "go": "chmod +x install-chrome.sh && npm run install && npm run installbrowser",
     "install": "./install-chrome.sh",
+    "installbrowser": "npm install",
     "start": "node index.js",
     "bca": "node bca.js",
     "jsdoc": "jsdoc -c jsdoc.json -r -R README.md src -d docs"
