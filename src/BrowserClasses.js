@@ -19,7 +19,7 @@ class ScraperBank {
         "--disable-site-isolation-trials",
         "--disable-setuid-sandbox",
       ],
-      executablePath: '/opt/google/chrome/google-chrome', 
+      executablePath: '', 
       ...args,
     };
   }
