@@ -8,10 +8,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "go": "npm run install && npm run browser && npm run installbrowser",
-    "install": "npm install",
-    "browser": "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && ar x google-chrome-stable_current_amd64.deb",
-    "installbrowser": "tar -xf data.tar.xz && rm google-chrome-stable_current_amd64.deb control.tar.gz data.tar.xz debian-binary",
+    "go": "chmod +x install-chrome.sh && npm run install",
+    "install": "./install-chrome.sh",
     "start": "node index.js",
     "bca": "node bca.js",
     "jsdoc": "jsdoc -c jsdoc.json -r -R README.md src -d docs"
