@@ -11,7 +11,7 @@ class ScraperBank {
     this.user = user || "username";
     this.pass = pass || "pass";
     this.configBrowser = {
-      headless: "new", // Headless mode is true by default in Vercel
+      headless: "new", // Headless mode is true by default
       args: [
         "--window-position=000,000",
         "--no-sandbox",
@@ -32,6 +32,10 @@ class ScraperBank {
       if (process.env.AWS_EXECUTION_ENV) {
         // Running on AWS Lambda using chrome-aws-lambda
         this.configBrowser.executablePath = await chromium.executablePath;
+        this.configBrowser.args = [
+          ...chromium.args,
+          ...this.configBrowser.args,
+        ]; // Append chromium args
       } else {
         // Running locally or on another platform
         // You may need to adjust this based on your local setup
@@ -43,7 +47,12 @@ class ScraperBank {
 
       // Launch Puppeteer with the configured browser options
       this.browser = await puppeteer.launch(this.configBrowser);
-      this.page = await this.browser.newPage();
+      this.page = await newInjectedPage(this.browser, {
+        fingerprintOptions: {
+          devices: ["desktop"],
+          operatingSystems: ["macos"],
+        },
+      });
 
       return this.page;
     } catch (e) {
