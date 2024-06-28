@@ -74,7 +74,7 @@ app.post("/start-scraping", (req, res) => {
 
     scraperProcess.on("close", (code) => {
       broadcast(
-        `Proses diberhentikan dengan code ${code} silahkan logout dan login kembali ..`,
+        `Proses diberhentikan dengan code ${code} silahkan log out dan login kembali ..`,
       );
       scraperProcess = null;
       logBuffer = [];
