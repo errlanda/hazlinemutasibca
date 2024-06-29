@@ -124,17 +124,17 @@ app.post("/logout", (req, res) => {
 });
 
 // WebSocket Server
-const ws = new WebSocketServer({ server });
+const wssss = new WebSocketServer({ server });
 
-ws.on("connection", (ws) => {
+wsss.on("connection", (wsss) => {
   console.log("Client connected");
 
   // Kirim log buffer ke klien yang baru terhubung
   logBuffer.forEach((log) => {
-    ws.send(log);
+    wsss.send(log);
   });
 
-  ws.on("message", (message) => {
+  wsss.on("message", (message) => {
     if (message === "/stop" || message === "/logout") {
       if (scraperProcess) {
         treeKill(scraperProcess.pid, "SIGTERM", (err) => {
@@ -149,14 +149,14 @@ ws.on("connection", (ws) => {
   });
 
   if (!scraperProcess) {
-    ws.send("Tidak ada proses scraping yang berjalan.");
-    ws.close();
+    wsss.send("Tidak ada proses scraping yang berjalan.");
+    wsss.close();
   }
 });
 
 // Broadcast log data to all connected clients
 function broadcast(data) {
-  ws.clients.forEach((client) => {
+  wsss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(data);
     }
