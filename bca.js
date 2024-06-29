@@ -1,27 +1,18 @@
-const ScrapBCA = require("./src/bank/BCA.class.js");
-const { BCAParser } = require("./src/helper/utils/Parser.js");
-const axios = require("axios");
+const ScrapBCA = require('./src/bank/BCA.class.js');
+const { BCAParser } = require('./src/helper/utils/Parser.js');
+const axios = require('axios');
 
 function delay(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-async function runScraper({
-  username,
-  password,
-  accountNumber,
-  phoneNumber,
-  unlimited,
-}) {
+async function runScraper({ username, password, accountNumber, phoneNumber, unlimited }) {
   const scraper = new ScrapBCA(username, password, accountNumber, {
-    headless: "new",
+    headless: true, // Atur sesuai kebutuhan Anda
     args: [
-      "--log-level=3",
-      "--no-default-browser-check",
-      "--disable-infobars",
-      "--disable-web-security",
-      "--disable-site-isolation-trials",
-      "--no-sandbox",
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      // Tambahkan opsi lain yang Anda perlukan
     ],
   });
 
@@ -44,12 +35,7 @@ async function runScraper({
   try {
     await scraper.loginToBCA();
     await delay(10000);
-    const mutasinya = await scraper.selectAccountAndSetDates(
-      tglawal,
-      blnawal,
-      tglakhir,
-      blnakhir
-    );
+    const mutasinya = await scraper.selectAccountAndSetDates(tglawal, blnawal, tglakhir, blnakhir);
     await delay(5000);
     const htmlContent = await mutasinya.content();
     await delay(2000);
@@ -73,7 +59,6 @@ async function runScraper({
       let referenceId2 = item.nominal.replace(/,/g, "");
       referenceId2 = referenceId2.split(".")[0];
 
-      // Kirim ke endpoint dengan logika pengulangan
       let success = false;
       let retries = 0;
       const maxRetries = 5;
@@ -105,11 +90,9 @@ async function runScraper({
           }
         }
       }
-
-      await delay(5000); // Delay sebelum iterasi berikutnya
     }
 
-    await delay(5000); // Delay sebelum logout
+    await delay(5000);
     await scraper.logoutAndClose();
     console.log("Tugas Berhasil dilaksanakan. Terima kasih.");
   } catch (error) {
@@ -121,7 +104,7 @@ async function runScraper({
     ) {
       await scraper.logoutAndClose();
       console.log("Menunggu 5 menit sebelum melakukan login kembali ..");
-      await delay(300000); // Menunggu 5 menit sebelum login kembali
+      await delay(300000);
     } else {
       await scraper.logoutAndClose();
     }
