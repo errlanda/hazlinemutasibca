@@ -8,7 +8,6 @@
     "lib": "lib"
   },
   "scripts": {
-    "install": "npm install",
     "start": "node index.js",
     "bca": "node bca.js erlandac1002 XXXXXX norekening 082228111129 unlimited"
   },
