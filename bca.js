@@ -106,7 +106,10 @@ async function runScraper({
         }
       }
 
-    await delay(5000);
+      await delay(5000); // Delay sebelum iterasi berikutnya
+    }
+
+    await delay(5000); // Delay sebelum logout
     await scraper.logoutAndClose();
     console.log("Tugas Berhasil dilaksanakan. Terima kasih.");
   } catch (error) {
@@ -118,7 +121,7 @@ async function runScraper({
     ) {
       await scraper.logoutAndClose();
       console.log("Menunggu 5 menit sebelum melakukan login kembali ..");
-      await delay(300000);
+      await delay(300000); // Menunggu 5 menit sebelum login kembali
     } else {
       await scraper.logoutAndClose();
     }
