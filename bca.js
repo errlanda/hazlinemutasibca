@@ -8,11 +8,11 @@ function delay(time) {
 
 async function runScraper({ username, password, accountNumber, phoneNumber, unlimited }) {
   const scraper = new ScrapBCA(username, password, accountNumber, {
-    headless: true, // Atur sesuai kebutuhan Anda
+    headless: true, // Sesuaikan sesuai kebutuhan
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      // Tambahkan opsi lain yang Anda perlukan
+      // Tambahkan opsi lain yang diperlukan
     ],
   });
 
@@ -34,12 +34,13 @@ async function runScraper({ username, password, accountNumber, phoneNumber, unli
 
   try {
     await scraper.loginToBCA();
-    await delay(10000);
+    await delay(10000); // Tunggu 10 detik setelah login
     const mutasinya = await scraper.selectAccountAndSetDates(tglawal, blnawal, tglakhir, blnakhir);
-    await delay(5000);
+    await delay(5000); // Tunggu 5 detik setelah memilih tanggal
     const htmlContent = await mutasinya.content();
-    await delay(2000);
+    await delay(2000); // Tunggu 2 detik setelah mendapatkan konten HTML
 
+    // Tentukan selector untuk parsing data dari halaman HTML
     const selectors = {
       accountNoField: 'font:contains("Nomor Rekening")',
       nameField: 'font:contains("Nama")',
@@ -49,12 +50,15 @@ async function runScraper({ username, password, accountNumber, phoneNumber, unli
       settlementTable: 'table[border="0"][width="70%"]',
     };
 
+    // Parse data menggunakan BCAParser
     const bcaParser = new BCAParser(htmlContent, selectors);
     const result = bcaParser.parse();
     console.log(result);
 
+    // Filter data mutasi yang masuk (CR)
     const mutasiMasuk = result.mutasi.filter((item) => item.mutasi === "CR");
 
+    // Loop untuk mengirim data ke endpoint WhatsApp dengan logika retry
     for (const item of mutasiMasuk) {
       let referenceId2 = item.nominal.replace(/,/g, "");
       referenceId2 = referenceId2.split(".")[0];
@@ -84,7 +88,7 @@ async function runScraper({ username, password, accountNumber, phoneNumber, unli
           if (error.message.includes("Connection Closed")) {
             retries++;
             console.log(`Mengulang... (${retries}/${maxRetries})`);
-            await delay(2000);
+            await delay(2000); // Tunggu 2 detik sebelum mencoba lagi
           } else {
             break;
           }
@@ -92,19 +96,20 @@ async function runScraper({ username, password, accountNumber, phoneNumber, unli
       }
     }
 
-    await delay(5000);
+    await delay(5000); // Tunggu 5 detik sebelum logout dan menutup browser
     await scraper.logoutAndClose();
     console.log("Tugas Berhasil dilaksanakan. Terima kasih.");
   } catch (error) {
     console.error("Error: ", error);
 
+    // Penanganan kesalahan, termasuk penundaan sebelum login kembali jika diperlukan
     if (
       error.message.includes("Anda dapat melakukan login kembali setelah 5 menit ..") ||
       error.message.includes("Anda dapat login kembali dalam 5 menit ..")
     ) {
       await scraper.logoutAndClose();
       console.log("Menunggu 5 menit sebelum melakukan login kembali ..");
-      await delay(300000);
+      await delay(300000); // Tunggu 5 menit (300000 ms) sebelum mencoba login kembali
     } else {
       await scraper.logoutAndClose();
     }
@@ -126,11 +131,13 @@ async function main() {
     unlimited,
   };
 
+  // Jika mode unlimited, lakukan scraping secara terus-menerus
   if (unlimited) {
     while (true) {
       await runScraper(scraperParams);
     }
   } else {
+    // Jalankan sekali jika tidak dalam mode unlimited
     await runScraper(scraperParams);
   }
 }
