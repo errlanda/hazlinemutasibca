@@ -34,7 +34,7 @@ class ScraperBank {
 //      console.error('Gagal mendeteksi path Chrome:', error.message);
  //     return ''; // Jika gagal mendeteksi, atur path kosong
 //    }
-//  }
+  }
 
   async launchBrowser() {
     try {
