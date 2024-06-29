@@ -124,9 +124,9 @@ app.post("/logout", (req, res) => {
 });
 
 // WebSocket Server
-const wss = new WebSocketServer({ server });
+const ws = new WebSocketServer({ server });
 
-wss.on("connection", (ws) => {
+ws.on("connection", (ws) => {
   console.log("Client connected");
 
   // Kirim log buffer ke klien yang baru terhubung
@@ -156,7 +156,7 @@ wss.on("connection", (ws) => {
 
 // Broadcast log data to all connected clients
 function broadcast(data) {
-  wss.clients.forEach((client) => {
+  ws.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(data);
     }
