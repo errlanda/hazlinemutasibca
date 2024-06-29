@@ -1,6 +1,7 @@
 const puppeteer = require("puppeteer-extra");
 const stealthPlugin = require("puppeteer-extra-plugin-stealth");
 const { newInjectedPage } = require("fingerprint-injector");
+const { execSync } = require('child_process');
 
 puppeteer.use(stealthPlugin());
 
@@ -19,9 +20,20 @@ class ScraperBank {
         "--disable-site-isolation-trials",
         "--disable-setuid-sandbox",
       ],
-      executablePath: '', 
+      executablePath: this.detectChromePath(), // Mendeteksi path Chrome otomatis
       ...args,
     };
+  }
+
+  detectChromePath() {
+    try {
+      // Lakukan pencarian path Chrome dengan perintah which
+      const chromePath = execSync('which google-chrome || which chromium').toString().trim();
+      return chromePath;
+    } catch (error) {
+      console.error('Gagal mendeteksi path Chrome:', error.message);
+      return ''; // Jika gagal mendeteksi, atur path kosong
+    }
   }
 
   async launchBrowser() {
