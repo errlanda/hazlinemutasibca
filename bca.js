@@ -1,18 +1,27 @@
-const ScrapBCA = require('./src/bank/BCA.class.js');
-const { BCAParser } = require('./src/helper/utils/Parser.js');
-const axios = require('axios');
+const ScrapBCA = require("./src/bank/BCA.class.js");
+const { BCAParser } = require("./src/helper/utils/Parser.js");
+const axios = require("axios");
 
 function delay(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-async function runScraper({ username, password, accountNumber, phoneNumber, unlimited }) {
+async function runScraper({
+  username,
+  password,
+  accountNumber,
+  phoneNumber,
+  unlimited,
+}) {
   const scraper = new ScrapBCA(username, password, accountNumber, {
-    headless: true, // Sesuaikan sesuai kebutuhan
+    headless: "new",
     args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      // Tambahkan opsi lain yang diperlukan
+      "--log-level=3",
+      "--no-default-browser-check",
+      "--disable-infobars",
+      "--disable-web-security",
+      "--disable-site-isolation-trials",
+      "--no-sandbox",
     ],
   });
 
@@ -34,13 +43,18 @@ async function runScraper({ username, password, accountNumber, phoneNumber, unli
 
   try {
     await scraper.loginToBCA();
-    await delay(10000); // Tunggu 10 detik setelah login
-    const mutasinya = await scraper.selectAccountAndSetDates(tglawal, blnawal, tglakhir, blnakhir);
-    await delay(5000); // Tunggu 5 detik setelah memilih tanggal
+    await delay(10000);
+    const mutasinya = await scraper.selectAccountAndSetDates(
+      tglawal,
+      blnawal,
+      tglakhir,
+      blnakhir,
+    );
+    await delay(5000);
+    await delay(5000);
     const htmlContent = await mutasinya.content();
-    await delay(2000); // Tunggu 2 detik setelah mendapatkan konten HTML
+    await delay(2000);
 
-    // Tentukan selector untuk parsing data dari halaman HTML
     const selectors = {
       accountNoField: 'font:contains("Nomor Rekening")',
       nameField: 'font:contains("Nama")',
@@ -50,66 +64,55 @@ async function runScraper({ username, password, accountNumber, phoneNumber, unli
       settlementTable: 'table[border="0"][width="70%"]',
     };
 
-    // Parse data menggunakan BCAParser
     const bcaParser = new BCAParser(htmlContent, selectors);
     const result = bcaParser.parse();
     console.log(result);
 
-    // Filter data mutasi yang masuk (CR)
     const mutasiMasuk = result.mutasi.filter((item) => item.mutasi === "CR");
 
-    // Loop untuk mengirim data ke endpoint WhatsApp dengan logika retry
     for (const item of mutasiMasuk) {
       let referenceId2 = item.nominal.replace(/,/g, "");
       referenceId2 = referenceId2.split(".")[0];
 
-      let success = false;
-      let retries = 0;
-      const maxRetries = 5;
+      // Kirim ke endpoint WhatsApp
+      await axios
+        .post("https://wa.erland.biz.id/mutasiotomatis", {
+          phoneNumber: phoneNumber,
+          reference_id2: referenceId2,
+        })
+        .then((response) => {
+          console.log("Data berhasil dikirim ke wa BOT:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error mengirim data:", error);
+        });
 
-      while (!success && retries < maxRetries) {
-        try {
-          const waResponse = await axios.post(
-            "https://wa.erland.biz.id/mutasiotomatis",
-            {
-              phoneNumber: phoneNumber,
-              reference_id2: referenceId2,
-            }
-          );
-
-          if (waResponse.data.status === false && waResponse.data.response === 'Connection Closed') {
-            throw new Error('Connection Closed');
-          }
-
-          console.log("Data berhasil dikirim ke wa BOT:", waResponse.data);
-          success = true;
-        } catch (error) {
-          console.error("Error mengirim data ke wa BOT:", error.message);
-          if (error.message.includes("Connection Closed")) {
-            retries++;
-            console.log(`Mengulang... (${retries}/${maxRetries})`);
-            await delay(2000); // Tunggu 2 detik sebelum mencoba lagi
-          } else {
-            break;
-          }
-        }
-      }
+      await axios
+        .post("https://hazline.com/endpoint/", { number: referenceId2 })
+        .then((response) => {
+          console.log("Data berhasil dikirim ke hazline:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error mengirim data ke hazline:", error);
+        });
     }
 
-    await delay(5000); // Tunggu 5 detik sebelum logout dan menutup browser
+    await delay(5000);
     await scraper.logoutAndClose();
     console.log("Tugas Berhasil dilaksanakan. Terima kasih.");
   } catch (error) {
     console.error("Error: ", error);
 
-    // Penanganan kesalahan, termasuk penundaan sebelum login kembali jika diperlukan
     if (
-      error.message.includes("Anda dapat melakukan login kembali setelah 5 menit ..") ||
+      error.message.includes(
+        "Anda dapat melakukan login kembali setelah 5 menit ..",
+      ) ||
       error.message.includes("Anda dapat login kembali dalam 5 menit ..")
     ) {
       await scraper.logoutAndClose();
       console.log("Menunggu 5 menit sebelum melakukan login kembali ..");
-      await delay(300000); // Tunggu 5 menit (300000 ms) sebelum mencoba login kembali
+
+      await delay(300000);
     } else {
       await scraper.logoutAndClose();
     }
@@ -131,13 +134,11 @@ async function main() {
     unlimited,
   };
 
-  // Jika mode unlimited, lakukan scraping secara terus-menerus
   if (unlimited) {
     while (true) {
       await runScraper(scraperParams);
     }
   } else {
-    // Jalankan sekali jika tidak dalam mode unlimited
     await runScraper(scraperParams);
   }
 }
