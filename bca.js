@@ -87,6 +87,11 @@ async function runScraper({
               reference_id2: referenceId2,
             }
           );
+
+          if (waResponse.data.status === false && waResponse.data.response === 'Connection Closed') {
+            throw new Error('Connection Closed');
+          }
+
           console.log("Data berhasil dikirim ke wa BOT:", waResponse.data);
           success = true;
         } catch (error) {
@@ -100,18 +105,6 @@ async function runScraper({
           }
         }
       }
-
-      if (success) {
-        try {
-          const hazlineResponse = await axios.post("https://hazline.com/endpoint/", {
-            number: referenceId2,
-          });
-          console.log("Data berhasil dikirim ke hazline:", hazlineResponse.data);
-        } catch (error) {
-          console.error("Error mengirim data ke hazline:", error.message);
-        }
-      }
-    }
 
     await delay(5000);
     await scraper.logoutAndClose();
