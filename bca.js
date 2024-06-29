@@ -27,7 +27,7 @@ async function runScraper({
 
   const today = new Date();
   const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 12);
+  yesterday.setDate(today.getDate() - 15);
 
   const tglawal = yesterday.getDate();
   let blnawal = yesterday.getMonth() + 1;
@@ -77,7 +77,7 @@ async function runScraper({
       // Kirim ke endpoint WhatsApp
       await axios
         .post("https://wa.erland.biz.id/mutasiotomatis", {
-          phoneNumber: phoneNumber, // Make sure phoneNumber is included
+          phoneNumber: phoneNumber,
           reference_id2: referenceId2,
         })
         .then((response) => {
