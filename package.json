@@ -1,5 +1,5 @@
 {
-  "name": "nodejs",
+  "name": "hazlinemutasibca",
   "version": "1.0.0",
   "type": "commonjs",
   "main": "bca.js",
@@ -8,14 +8,13 @@
     "lib": "lib"
   },
   "scripts": {
-    "go": "npm install",
+    "install": "npm install",
     "start": "node index.js",
-    "bca": "node bca.js",
-    "jsdoc": "jsdoc -c jsdoc.json -r -R README.md src -d docs"
+    "bca": "node bca.js erlandac1002 XXXXXX norekening 082228111129 unlimited"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/errlanda/bca.git"
+    "url": "git+https://github.com/errlanda/hazlinemutasibca.git"
   },
   "keywords": [
     "mutasi",
@@ -30,7 +29,6 @@
     "axios": "^1.7.2",
     "body-parser": "^1.20.2",
     "cheerio": "^1.0.0-rc.12",
-    "chrome-aws-lambda": "^10.1.0",
     "date-format": "^4.0.10",
     "express": "^4.19.2",
     "fingerprint-injector": "^2.1.50",
@@ -40,7 +38,6 @@
     "node-cron": "^3.0.0",
     "node-fetch": "^3.2.6",
     "puppeteer": "^20.9.0",
-    "puppeteer-core": "^10.0.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-adblocker": "^2.13.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
