@@ -10,9 +10,9 @@ UJI INTERNET BANKING KLIK BCA<br>
 node bca.js username password rekening notelpon unlimited
 <br><br>
 JALANKAN SERVER yang BERJALAN DI PORT 3000<br>
-node index.js<br>
+node index.js
 <br><br>
 KALAU MAU UPTIME TERUS<br>
 npx pm2 start index.js
 <br><br>
-ATUR SENDIRI WEBSOCKETNYA MAU HTTP ATAU HTTP TINGGAL HAPUS WSS JADI WS PADA /public/log.html
+ATUR SENDIRI WEBSOCKETNYA MAU HTTP ATAU HTTPS TINGGAL HAPUS WSS JADI WS PADA /public/log.html
