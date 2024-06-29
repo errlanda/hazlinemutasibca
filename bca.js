@@ -48,9 +48,8 @@ async function runScraper({
       tglawal,
       blnawal,
       tglakhir,
-      blnakhir,
+      blnakhir
     );
-    await delay(5000);
     await delay(5000);
     const htmlContent = await mutasinya.content();
     await delay(2000);
@@ -74,27 +73,49 @@ async function runScraper({
       let referenceId2 = item.nominal.replace(/,/g, "");
       referenceId2 = referenceId2.split(".")[0];
 
-      // Kirim ke endpoint WhatsApp
-      await axios
-        .post("https://wa.erland.biz.id/mutasiotomatis", {
-          phoneNumber: phoneNumber,
-          reference_id2: referenceId2,
-        })
-        .then((response) => {
-          console.log("Data berhasil dikirim ke wa BOT:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error mengirim data:", error);
-        });
+      // Kirim ke endpoint dengan logika pengulangan
+      let success = false;
+      let retries = 0;
+      const maxRetries = 5;
 
-      await axios
-        .post("https://hazline.com/endpoint/", { number: referenceId2 })
-        .then((response) => {
-          console.log("Data berhasil dikirim ke hazline:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error mengirim data ke hazline:", error);
-        });
+      while (!success && retries < maxRetries) {
+        try {
+          const waResponse = await axios.post(
+            "https://wa.erland.biz.id/mutasiotomatis",
+            {
+              phoneNumber: phoneNumber,
+              reference_id2: referenceId2,
+            }
+          );
+
+          if (waResponse.data.status === false && waResponse.data.response === 'Connection Closed') {
+            throw new Error('Connection Closed');
+          }
+
+          console.log("Data berhasil dikirim ke wa BOT:", waResponse.data);
+          success = true;
+        } catch (error) {
+          console.error("Error mengirim data ke wa BOT:", error.message);
+          if (error.message.includes("Connection Closed")) {
+            retries++;
+            console.log(`Mengulang... (${retries}/${maxRetries})`);
+            await delay(2000);
+          } else {
+            break;
+          }
+        }
+      }
+
+      if (success) {
+        try {
+          const hazlineResponse = await axios.post("https://hazline.com/endpoint/", {
+            number: referenceId2,
+          });
+          console.log("Data berhasil dikirim ke hazline:", hazlineResponse.data);
+        } catch (error) {
+          console.error("Error mengirim data ke hazline:", error.message);
+        }
+      }
     }
 
     await delay(5000);
@@ -104,14 +125,11 @@ async function runScraper({
     console.error("Error: ", error);
 
     if (
-      error.message.includes(
-        "Anda dapat melakukan login kembali setelah 5 menit ..",
-      ) ||
+      error.message.includes("Anda dapat melakukan login kembali setelah 5 menit ..") ||
       error.message.includes("Anda dapat login kembali dalam 5 menit ..")
     ) {
       await scraper.logoutAndClose();
       console.log("Menunggu 5 menit sebelum melakukan login kembali ..");
-
       await delay(300000);
     } else {
       await scraper.logoutAndClose();
