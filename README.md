@@ -1,13 +1,13 @@
-Kode ini untuk dideploy ke Replit
-<br><br>
-untuk install<br>
-npm install
-<br><br>
-untuk menjalankan server<br>
-npm run start
-<br><br>
-untuk menguji script scraper <br>
-node bca.js yourUsername yourPassword yourAccountNumber yourPhoneNumber unlimited
-<br><br>
-Ubah sendiri endpoint ke BOT dan endpoint url yang Anda buat.
+KODE INI DIDEPLOY KE AWS EC2
 
+INSTALL
+npm install
+
+JANGAN LUPA INSTALL PM2
+npm install pm2
+
+UJI INTERNET BANKING KLIK BCA
+node bca.js username password rekening notelpon unlimited
+
+JALANKAN SERVER yang BERJALAN DI PORT 3000 ATUR SENDIRI WEBSOCKETNYA MAU HTTP ATAU HTTP TINGGAL HAPUS WSS JADI WS PADA /public/log.html
+node index.js
