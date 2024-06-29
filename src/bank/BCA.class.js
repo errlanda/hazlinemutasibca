@@ -78,7 +78,7 @@ class ScrapBCA extends ScraperBank {
         const padStart2 = (num) => num.toString().padStart(2, "0");
 
         // Tambahkan penundaan sebelum memilih tanggal
-        await newPage.waitForTimeout(15000); // Tunggu 15 detik sebelum memilih tanggal
+        await newPage.waitForTimeout(11000); // Tunggu 15 detik sebelum memilih tanggal
 
         if (tglawal || blnawal || tglakhir || blnakhir) {
             this.log("[" + this.user + "] Memilih tanggal ..");
@@ -103,21 +103,21 @@ class ScrapBCA extends ScraperBank {
                 blnakhir.toString(),
             );
 
-            await this.page.waitForTimeout(15000); // Tunggu 10 detik
+            await this.page.waitForTimeout(10000); // Tunggu 10 detik
 
             this.log("[" + this.user + "] Mendapatkan mutasi ..");
             await newPage.click(BCASelectors.SETTLEMENT_PAGE.submitButton, {
                 delay: 1500,
             });
 
-            await this.page.waitForTimeout(10000); // Tambahkan penundaan setelah mengklik tombol submit
+            await this.page.waitForTimeout(7000); // Tambahkan penundaan setelah mengklik tombol submit
             return newPage;
         } else {
             this.log("[" + this.user + "] Get latest mutasi ..");
             await newPage.click(BCASelectors.SETTLEMENT_PAGE.submitButton, {
                 delay: 1500,
             });
-            await this.page.waitForTimeout(10000); // Tambahkan penundaan setelah mengklik tombol submit
+            await this.page.waitForTimeout(7000); // Tambahkan penundaan setelah mengklik tombol submit
             return newPage;
         }
     }
