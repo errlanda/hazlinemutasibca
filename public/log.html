@@ -109,7 +109,7 @@
         <script>
             // Script JavaScript untuk menerima log output dari WebSocket
             const logContainer = document.getElementById("log-container");
-            const ws = new WebSocket(`ws://${window.location.host}`);
+            const ws = new WebSocket(`wss://${window.location.host}`);
 
             ws.onopen = () => {
                 console.log("Connected to WebSocket server");
