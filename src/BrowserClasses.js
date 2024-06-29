@@ -20,20 +20,20 @@ class ScraperBank {
         "--disable-site-isolation-trials",
         "--disable-setuid-sandbox",
       ],
-      executablePath: this.detectChromePath(), // Mendeteksi path Chrome otomatis
+      executablePath: '', // Mendeteksi path Chrome otomatis
       ...args,
     };
   }
 
- // detectChromePath() {
-  //  try {
+ detectChromePath() {
+   try {
       // Lakukan pencarian path Chrome dengan perintah which
- //     const chromePath = execSync('which google-chrome || which chromium').toString().trim();
- //     return chromePath;
-  //  } catch (error) {
-//      console.error('Gagal mendeteksi path Chrome:', error.message);
- //     return ''; // Jika gagal mendeteksi, atur path kosong
-//    }
+  const chromePath = execSync('which google-chrome || which chromium').toString().trim();
+  return chromePath;
+   } catch (error) {
+  console.error('Gagal mendeteksi path Chrome:', error.message);
+   return ''; // Jika gagal mendeteksi, atur path kosong
+ }
   }
 
   async launchBrowser() {
