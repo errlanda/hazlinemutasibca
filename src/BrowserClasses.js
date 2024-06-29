@@ -25,16 +25,16 @@ class ScraperBank {
     };
   }
 
-  detectChromePath() {
-    try {
+ // detectChromePath() {
+  //  try {
       // Lakukan pencarian path Chrome dengan perintah which
-      const chromePath = execSync('which google-chrome || which chromium').toString().trim();
-      return chromePath;
-    } catch (error) {
-      console.error('Gagal mendeteksi path Chrome:', error.message);
-      return ''; // Jika gagal mendeteksi, atur path kosong
-    }
-  }
+ //     const chromePath = execSync('which google-chrome || which chromium').toString().trim();
+ //     return chromePath;
+  //  } catch (error) {
+//      console.error('Gagal mendeteksi path Chrome:', error.message);
+ //     return ''; // Jika gagal mendeteksi, atur path kosong
+//    }
+//  }
 
   async launchBrowser() {
     try {
