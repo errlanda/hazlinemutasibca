@@ -140,7 +140,7 @@ class ScrapBCA extends ScraperBank {
 
     async logoutAndClose() {
         try {
-            this.log("] [" + this.user + "] Logout..");
+            this.log("[" + this.user + "] Logout..");
             await this.page.goto(BCASelectors.LOGOUT_PAGE.url, {
                 waitUntil: "domcontentloaded",
             });
@@ -153,7 +153,7 @@ class ScrapBCA extends ScraperBank {
     async handleDialogAndLogout(newPage) {
         newPage.on("dialog", async (dialog) => {
             this.dialogMessage = dialog.message();
-            this.log(`] ["${this.user}"] ${this.dialogMessage}`);
+            this.log(`["${this.user}"] ${this.dialogMessage}`);
             await dialog.dismiss();
             await this.logoutAndClose();
         });
