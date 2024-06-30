@@ -1,7 +1,7 @@
 {
   "name": "Mutasi Otomatis",
   "short_name": "BCA Scraper",
-  "start_url": "/public/login.html",
+  "start_url": "/login.html",
   "display": "standalone",
   "background_color": "#FFFFFF",
   "theme_color": "#000000",
