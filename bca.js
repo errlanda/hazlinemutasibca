@@ -81,7 +81,7 @@ async function runScraper({
       while (!success && retries < maxRetries) {
         try {
           const waResponse = await axios.post(
-            "https://wa.erland.biz.id/mutasiotomatis",
+            "https://bot.erland.biz.id/mutasiotomatis",
             {
               phoneNumber: phoneNumber,
               reference_id2: referenceId2,
